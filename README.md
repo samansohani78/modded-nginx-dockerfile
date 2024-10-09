@@ -8,8 +8,8 @@ This repository provides a Docker image based on Nginx, precompiled with the fol
 - `ModSecurity-nginx`
 - `ngx_brotli`
 - `njs`
-- `zlib`
-- `openssl`
+- `zlib:1.3.1`
+- `openssl:3.3.2`
 
 The image is built from a multi-stage Dockerfile, ensuring a small final image size while supporting essential security and performance features.
 
@@ -30,38 +30,58 @@ The image is built using two Dockerfiles:
 1. `dockerfile-base`: This is the base image that compiles all required dependencies and modules for Nginx.
 2. `dockerfile-custom`: This uses the base image and sets up the final environment for Nginx, including your custom `nginx.conf`.
 
-## Usage
+## Building the Images
 
-### Building the Image
+### Base Image
 
-To build the Docker image locally, you can use the following command:
+To build the base image, use the following commands:
 
-```bash
-docker build -t custom-nginx .
-```
+- **Docker**:
 
-Alternatively, if you are using `docker-compose`, add the following to your `docker-compose.yml`:
+    ```bash
+    docker build -f dockerfile-base -t custom-nginx-base:latest .
+    ```
 
-```yaml
-version: '3'
-services:
-  nginx:
-    build: .
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-    networks:
-      - webnet
-```
+- **Podman**:
+
+    ```bash
+    podman build -f dockerfile-base -t custom-nginx-base:latest .
+    ```
+
+- **Nerdctl**:
+
+    ```bash
+    nerdctl build -f dockerfile-base -t custom-nginx-base:latest .
+    ```
+
+### Custom Image
+
+Once the base image is built, build the custom image using:
+
+- **Docker**:
+
+    ```bash
+    docker build -f dockerfile-custom -t custom-nginx:latest .
+    ```
+
+- **Podman**:
+
+    ```bash
+    podman build -f dockerfile-custom -t custom-nginx:latest .
+    ```
+
+- **Nerdctl**:
+
+    ```bash
+    nerdctl build -f dockerfile-custom -t custom-nginx:latest .
+    ```
 
 ### Running the Container
 
 After building the image, you can run the Nginx container:
 
 ```bash
-docker run -d -p 80:80 -p 443:443 custom-nginx
+docker run -d -p 80:80 -p 443:443 custom-nginx:latest
 ```
 
 This will start Nginx on ports 80 (HTTP) and 443 (HTTPS), ready to serve requests with the additional modules and configurations enabled.
@@ -87,6 +107,7 @@ You can quickly test the provided features by accessing specific endpoints:
 
 - Visit `/headers` to test custom headers using the Headers More module.
 - Visit `/proxy` for reverse proxy testing.
+- Visit `/perl` to test perl module.
 - Use `/geoip` for GeoIP-based access control.
 
 ### Customizing
@@ -99,4 +120,4 @@ If you encounter any issues or want to suggest improvements, feel free to open a
 
 ## License
 
-This project is licensed under the Apache License 2.0 License. See the `LICENSE` file for details.
+This project is licensed under the Apache 2.0 License. See the `LICENSE` file for details.
