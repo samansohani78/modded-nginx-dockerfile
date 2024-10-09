@@ -1,0 +1,17 @@
+# Use the custom-nginx:v10 image as the base image
+FROM custom-nginx:base
+
+# Set working directory
+WORKDIR /etc/nginx
+
+# Copy the nginx configuration file
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Switch to the nginx user
+USER nginx
+
+# Expose necessary ports
+EXPOSE 80 443
+
+# Start Nginx
+CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
