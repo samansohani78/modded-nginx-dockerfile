@@ -36,8 +36,17 @@ RUN apk update && \
         bash \ 
         gcc \
         make \
-        libedit-dev
-
+        libedit-dev \ 
+        protobuf-dev \
+        libc-dev \ 
+        grpc-dev \ 
+        binutils-gold \ 
+        gcompat \
+        wget \
+        ca-certificates \
+        musl-dev \
+        g++ \
+        c-ares-dev 
 
 # Set the working directory to store source code
 WORKDIR /usr/local/src
@@ -61,7 +70,6 @@ RUN git clone --recurse-submodules -j8 https://github.com/google/ngx_brotli.git
 RUN git clone --recurse-submodules -j8 https://github.com/libinjection/libinjection.git 
 RUN git clone --recurse-submodules -j8 https://github.com/nginx/njs.git
 
-
 # Build and install ModSecurity
 RUN cd /usr/local/src/ModSecurity && \
     git submodule init && \
@@ -81,7 +89,7 @@ RUN cd /usr/local/src/libinjection && \
 # Build and install njs
 RUN cd /usr/local/src/njs && \
 ./configure && \
-make
+make -j$(nproc)
 
 # Build and install brotli
 RUN cd /usr/local/src/ngx_brotli/deps/brotli && \

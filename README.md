@@ -3,11 +3,11 @@
 
 This repository provides a Docker image based on Nginx, precompiled with the following modules:
 
-- `headers-more-nginx-module`
-- `naxsi`
-- `ModSecurity-nginx`
-- `ngx_brotli`
-- `njs`
+- `headers-more-nginx-module:latest`
+- `naxsi:latest`
+- `ModSecurity-nginx:latest`
+- `ngx_brotli:latest`
+- `njs:latest`
 - `zlib:1.3.1`
 - `openssl:3.3.2`
 
