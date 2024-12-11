@@ -146,7 +146,7 @@ RUN cd /usr/local/src/nginx-1.27.3 && \
         --with-pcre \
         --with-pcre-jit \
         --with-zlib=/usr/local/src/zlib-1.3.1 \
-        --with-openssl=/usr/local/src/openssl-3.3.2 \
+        --with-openssl=/usr/local/src/openssl-3.4.0 \
         --with-libatomic \
         --with-http_perl_module \
         --with-stream \
@@ -160,11 +160,11 @@ RUN cd /usr/local/src/nginx-1.27.3 && \
         --add-module=/usr/local/src/ngx_brotli \
         --add-module=/usr/local/src/njs/nginx \
         --with-cc-opt='-g0 -O2 -s -fPIC' \
-        --with-ld-opt='-Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -Wl,--as-needed -pie' && \
-    make -j$(nproc) && \
-    make install && \
-    mkdir -p /usr/local/lib/perl5/site_perl && \
-    cp objs/src/http/modules/perl/nginx.pm /usr/local/lib/perl5/site_perl/
+        --with-ld-opt='-Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -Wl,--as-needed -pie'
+RUN cd /usr/local/src/nginx-1.27.3 && make -j$(nproc) 
+RUN cd /usr/local/src/nginx-1.27.3 && make install
+RUN mkdir -p /usr/local/lib/perl5/site_perl 
+RUN cp /usr/local/src/nginx-1.27.3/objs/src/http/modules/perl/nginx.pm /usr/local/lib/perl5/site_perl/
 
 # Stage 2: Final Stage
 FROM alpine:3.21
